@@ -178,7 +178,7 @@ function _get() {
 		
 		ifs="$IFS"
 		IFS=':'
-		declare -a revarray=($rev)
+		revarray=($rev) # bash 4.3, declare -a: unbound variable
 		IFS="$ifs"
 		
 		if [[ "${revarray[0]}" = "tag" ]]; then  ## tag:tagname
@@ -232,7 +232,7 @@ function _get() {
 		revpart="${1#*@}"
 		ifs="$IFS"
 		IFS='@'
-		declare -a revarray=($revpart)
+		revarray=($revpart) # bash 4.3, declare -a: unbound variable
 		rev=${revarray[0]}
 		branch=${revarray[1]}
 		if [ -z $branch ]; then
