@@ -256,6 +256,38 @@ function _get() {
 		IFS="$ifs"
 		tar -zcv --force-local -f "$filename" "$(basename "$url")-$revpart" || return
 		;;
+	  bzr://*)
+		local url
+		local rev
+		local revarray
+		local branch
+		local ifs
+		url="${1#bzr://}"
+		url="${url%@*}"
+		rev="${1##*@}"
+		ifs="$IFS"
+		IFS=':'
+		revarray=($rev) # bash 4.3, declare -a: unbound variable
+		rev=${revarray[0]}
+		branch=${revarray[1]}
+		IFS="$ifs"
+		if [ -z $branch ]; then
+			bzr co -r "${rev//.//}" http://"$url" || bzr co -r "${rev//.//}" https://"$url" || bzr co -r "${rev//.//}" bzr://"$url" || return
+		else
+			bzr branch -r "${rev//.//}" http://"$url" || bzr branch -r "${rev//.//}" https://"$url" || bzr branch -r "${rev//.//}" bzr://"$url" || return
+		fi
+		case "$rev" in
+		  "{"*"}")
+		  	rev="${rev/{/}"
+			rev="${rev/\}/}"
+			;;
+		  *)
+		  	rev="r$rev"
+			;;
+		esac
+		mv "$(basename "$url")" "$(basename "$url")-$rev" || return
+		tar -zcv --force-local -f "$filename" "$(basename "$url")-$rev" || return
+		;;
 	  *)
 	  	echo "unsupported URL scheme: $url" >&2
 		return 1
