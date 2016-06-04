@@ -1,7 +1,7 @@
-http://download.fedora.redhat.com/pub/fedora/linux/core/5/source/SRPMS/
-ftp://download.fedora.redhat.com/pub/fedora/linux/core/5/source/SRPMS/
-ftp://gd.tuwien.ac.at/opsys/linux/fedora/core/5/source/SRPMS/
-ftp://ftp.funet.fi/pub/mirrors/ftp.redhat.com/pub/fedora/linux/core/5/source/SRPMS/
-ftp://ftp.tu-chemnitz.de/pub/linux/fedora-core/5/source/SRPMS/
-ftp://mirrors.kernel.org/fedora/core/5/source/SRPMS/
-rsync://ftp.uninett.no/fedora-linux-core/5/source/SRPMS/
+http://mirror.datacenter.by/pub/fedoraproject.org/linux//releases/22/Workstation/source/SRPMS/
+ftp://mirror.datacenter.by/pub/fedoraproject.org/linux//releases/22/Workstation/source/SRPMS/
+ftp://gd.tuwien.ac.at/opsys/linux/fedora/linux/releases/22/Workstation/source/SRPMS/
+ftp://ftp.funet.fi/pub/mirrors/ftp.redhat.com/pub/fedora/linux/releases/22/Workstation/source/SRPMS/
+ftp://ftp.tu-chemnitz.de/pub/linux/fedora/linux/releases/22/Workstation/source/SRPMS/
+ftp://mirrors.kernel.org/fedora/releases/22/Workstation/source/SRPMS/
+ftp://ftp.uninett.no/fedora/releases/22/Workstation/source/SRPMS/
