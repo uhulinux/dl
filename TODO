@@ -1,0 +1,12 @@
+- letoltott fileok helyessegenek ellenorzese
+- ha egy csomibol tobb mindent kell kiszedni, akkor azt egy blokkban le
+  lehessen irni
+- cache-elt archivum kibontas hardlinkezessel
+- http nem-anonymous support
+- cvs mukodest ellenorizni (xfce?)
+- doksi update, angol verzio
+- ellenorizni:
+  - rpm, cpio, rar, arj kicsomagolas (dirname)
+  - unpack optimalizacio (what)
+- ".." utvonalat tartalmazo tar archivumok ertelmes kezelese
+- a do_save_into_archivedir valoszinuleg felesleges
