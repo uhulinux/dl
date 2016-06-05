@@ -234,6 +234,9 @@ function _get() {
 		fi
 		;;
 	  hg://*)
+	  # mercurial
+	  # hg://$url@$rev -> hg clone $url -r $rev
+	  # hg://$url@$rev:$branch -> hg clone $url -r $rev -b $branch
 		local url
 		local rev
 		local revpart
@@ -244,7 +247,7 @@ function _get() {
 		url="${url%%@*}"
 		revpart="${1#*@}"
 		ifs="$IFS"
-		IFS='@'
+		IFS=':'
 		revarray=($revpart) # bash 4.3, declare -a: unbound variable
 		rev=${revarray[0]}
 		branch=${revarray[1]}
@@ -257,6 +260,10 @@ function _get() {
 		tar -zcv --force-local -f "$filename" "$(basename "$url")-$revpart" || return
 		;;
 	  bzr://*)
+	  # bazaar
+	  # bzr://$url@$rev -> bzr co $url -r $rev
+	  # bzr://$url@$rev:$branch -> bzr branch $url -r $rev
+	  #  $branch bármi lehet, csak azt jelzi, hogy 'bzr branch' kell 'bzr co' helyett
 		local url
 		local rev
 		local revarray
@@ -276,6 +283,26 @@ function _get() {
 		else
 			bzr branch -r "${rev//.//}" http://"$url" || bzr branch -r "${rev//.//}" https://"$url" || bzr branch -r "${rev//.//}" bzr://"$url" || return
 		fi
+		case "$rev" in
+		  "{"*"}")
+		  	rev="${rev/{/}"
+			rev="${rev/\}/}"
+			;;
+		  *)
+		  	rev="r$rev"
+			;;
+		esac
+		mv "$(basename "$url")" "$(basename "$url")-$rev" || return
+		tar -zcv --force-local -f "$filename" "$(basename "$url")-$rev" || return
+		;;
+	  lp://*)
+	  # launchpad bazaar, lp://$url@$rev -> bzr branch lp:$url -r $rev
+		local url
+		local rev
+		url="${1#lp://}"
+		url="${url%@*}"
+		rev="${1##*@}"
+		bzr branch -r "${rev//.//}" lp:"$url" || return
 		case "$rev" in
 		  "{"*"}")
 		  	rev="${rev/{/}"
