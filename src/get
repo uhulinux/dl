@@ -262,7 +262,7 @@ function _get() {
 	  bzr://*)
 	  # bazaar
 	  # bzr://$url@$rev -> bzr branch -r $rev $url
-	  # bzr://$url@$rev:$branch -> bzr co -r $rev $url
+	  # bzr://$url@$rev:$co -> bzr co -r $rev $url
 	  #  $co bármi lehet, csak azt jelzi, hogy 'bzr co' kell 'bzr branch' helyett
 		local url
 		local rev
