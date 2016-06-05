@@ -261,9 +261,9 @@ function _get() {
 		;;
 	  bzr://*)
 	  # bazaar
-	  # bzr://$url@$rev -> bzr co -r $rev $url
-	  # bzr://$url@$rev:$branch -> bzr branch -r $rev $url
-	  #  $branch bármi lehet, csak azt jelzi, hogy 'bzr branch' kell 'bzr co' helyett
+	  # bzr://$url@$rev -> bzr branch -r $rev $url
+	  # bzr://$url@$rev:$branch -> bzr co -r $rev $url
+	  #  $co bármi lehet, csak azt jelzi, hogy 'bzr co' kell 'bzr branch' helyett
 		local url
 		local rev
 		local revarray
@@ -276,12 +276,12 @@ function _get() {
 		IFS=':'
 		revarray=($rev) # bash 4.3, declare -a: unbound variable
 		rev=${revarray[0]}
-		branch=${revarray[1]}
+		co=${revarray[1]}
 		IFS="$ifs"
-		if [ -z $branch ]; then
-			bzr co -r "${rev//.//}" http://"$url" || bzr co -r "${rev//.//}" https://"$url" || bzr co -r "${rev//.//}" bzr://"$url" || return
-		else
+		if [ -z $co ]; then
 			bzr branch -r "${rev//.//}" http://"$url" || bzr branch -r "${rev//.//}" https://"$url" || bzr branch -r "${rev//.//}" bzr://"$url" || return
+		else
+			bzr co -r "${rev//.//}" http://"$url" || bzr co -r "${rev//.//}" https://"$url" || bzr co -r "${rev//.//}" bzr://"$url" || return
 		fi
 		mv "$(basename "$url")" "$(basename "$url")-$rev" || return
 		tar -zcv --force-local -f "$filename" "$(basename "$url")-$rev" || return
