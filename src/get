@@ -248,18 +248,57 @@ function _get() {
 		revarray=($rev)
 		IFS="$ifs"
 
-		tmpsub="$(basename "$url")"
-		tmpsub=${tmpsub/.git/}
-		tmpsub=${tmpsub}"-"${revarray[0]}
-		mkdir -p "$tmpdir/$tmpsub"
-		cd "$tmpdir/$tmpsub"
+		if [[ "${revarray[0]}" = "tag" ]]; then  ## tag:tagname
+			tmpsub="$(basename "$url")"
+			tmpsub=${tmpsub/.git/}
+			tmpsub=${tmpsub}"-"${revarray[1]}
+			mkdir -p "$tmpdir/$tmpsub"
+			cd "$tmpdir/$tmpsub"
 
-		git clone "https://$url" "$tmpsub"
-		cd "$tmpsub"
-		git checkout "${revarray[0]}"
+			git init
+			git pull "https://$url" "refs/tags/${revarray[1]}"
 
-		cd ..
-		tar -zcv --force-local -f "$filename" "$tmpsub" || return
+			cd ..
+			tar -zcv --force-local -f "$filename" "$tmpsub" || return
+		elif [[ "${revarray[0]}" = "head" ]]; then  ## head:headname
+			tmpsub="$(basename "$url")"
+			tmpsub=${tmpsub/.git/}
+			tmpsub=${tmpsub}"-"${revarray[1]}
+			mkdir -p "$tmpdir/$tmpsub"
+			cd "$tmpdir/$tmpsub"
+
+			git init
+			git pull "https://$url" "refs/heads/${revarray[1]}"
+
+			cd ..
+			tar -zcv --force-local -f "$filename" "$tmpsub" || return
+		elif [[ "${revarray[0]}" = "branch" ]]; then  ## branch:branchname
+			tmpsub="$(basename "$url")"
+			tmpsub=${tmpsub/.git/}
+			tmpsub=${tmpsub}"-"${revarray[1]}
+			mkdir -p "$tmpdir/$tmpsub"
+			cd "$tmpdir/$tmpsub"
+
+			git clone "https://$url" "$tmpsub"
+			cd "$tmpsub"
+			git checkout "${revarray[1]}"
+
+ 			cd ..
+ 			tar -zcv --force-local -f "$filename" "$tmpsub" || return
+		else ## commit
+			tmpsub="$(basename "$url")"
+			tmpsub=${tmpsub/.git/}
+			tmpsub=${tmpsub}"-"${revarray[0]}
+			mkdir -p "$tmpdir/$tmpsub"
+			cd "$tmpdir/$tmpsub"
+
+			git clone "https://$url" "$tmpsub"
+			cd "$tmpsub"
+			git checkout "${revarray[0]}"
+
+			cd ..
+			tar -zcv --force-local -f "$filename" "$tmpsub" || return
+		fi
 		;;
 	  hg://*)
 	  # mercurial
@@ -280,9 +319,9 @@ function _get() {
 		rev=${revarray[0]}
 		branch=${revarray[1]}
 		if [ -z $branch ]; then
-			hg clone -r $rev "http://$url" "$(basename "$url")-$revpart" || return
+			hg clone -r $rev "https://$url" "$(basename "$url")-$revpart" || hg clone -r $rev "http://$url" "$(basename "$url")-$revpart"
 		else
-			hg clone -b $branch -r $rev "http://$url" "$(basename "$url")-$revpart" || return
+			hg clone -b $branch -r $rev "https://$url" "$(basename "$url")-$revpart" || hg clone -b $branch -r $rev "http://$url" "$(basename "$url")-$revpart"
 		fi
 		IFS="$ifs"
 		tar -zcv --force-local -f "$filename" "$(basename "$url")-$revpart" || return
