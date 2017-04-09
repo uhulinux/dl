@@ -133,19 +133,6 @@ function _get() {
 		fi
 		rsync -avP "${limit[@]}" "$1" "$filename" || return
 		;;
-	  cvs://*)
-		local cvsroot
-		local date
-		local dir
-		cvsroot=":pserver:${1#cvs://}"
-		date="${cvsroot##*%}"
-		cvsroot="${cvsroot%\%*}"
-		dir="${cvsroot##*:}"
-		cvsroot="${cvsroot%:*}"
-		cvs -z3 -d "$cvsroot" co -D "${date//.//}" "$dir" || return
-		mv "$dir" "$(basename "$dir")-$date" || return
-		tar -zcv --force-local -f "$filename" "$(basename "$dir")-$date" || return
-		;;
 	  svn://*)
 		local url
 		local rev
@@ -217,7 +204,7 @@ function _get() {
 			git checkout "${revarray[1]}"
 
  			cd ..
- 			tar -zcv --force-local -f "$filename" "$tmpsub" || return
+			tar -zcv --force-local -f "$filename" "$tmpsub" || return
 		else ## commit
 			tmpsub="$(basename "$url")"
 			tmpsub=${tmpsub/.git/}
