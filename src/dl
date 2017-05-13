@@ -31,6 +31,9 @@ function unpack() {
 		*.[tT][aA][rR].[lL][zZ][mM][aA])
 			tar --use-compress-program=lzmadec -x -v --force-local -h -f "$file" -- "$@"
 			;;
+		*.[tT][aA][rR].[lL][zZ])
+			tar --use-compress-program=lzip -x -v --force-local -h -f "$file" -- "$@"
+			;;
 		*.[tT][aA][rR].[xX][zZ])
 			tar --use-compress-program=xzdec -x -v --force-local -h -f "$file" -- "$@"
 			;;
