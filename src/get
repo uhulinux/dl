@@ -368,6 +368,10 @@ function _get() {
 	c=$((a&~m))
 	chmod 0$(printf %03o $c) -- "$filename"
 
+	if [ ! -d "$GET_CACHEDIR" ]; then
+		mkdir -p "$GET_CACHEDIR"
+	fi
+	
 	if [ -n "$cachedir" -a -w "$GET_CACHEDIR" ]; then
 		mkdir -p "$cachedir" && cp -af "$name" "$cachedir"/
 	fi
