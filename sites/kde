@@ -1,6 +1,2 @@
-http://download.kde.org/
-ftp://ftp.gwdg.de/pub/linux/kde/
-ftp://ftp.uni-kl.de/pub/linux/kde/
-ftp://ftp-stud.fht-esslingen.de/pub/Mirrors/ftp.kde.org/pub/kde/
-ftp://ftp.ussg.iu.edu/pub/kde/
-ftp://ftp.isu.edu.tw/pub/Unix/Desktop/KDE/
+https://download.kde.org/
+https://ftp.gnome.org/mirror/kde.org/ftp/stable/
